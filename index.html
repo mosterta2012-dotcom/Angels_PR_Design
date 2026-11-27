@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PR &amp; Design · Angels NPO Management System (prototype)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+:root{--g:#123F38;--g2:#0B2B26;--bg:#F5F3EF;--ink:#1F2421;--mut:#5F645F;--line:#E4E0D8;--soft:#E9EFEC}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;font-size:15px}
+button,input,select,textarea{font:inherit}
+a{color:var(--g)}
+.top{display:flex;align-items:center;justify-content:space-between;gap:16px;height:68px;padding:0 24px;background:#fff;border-bottom:1px solid var(--line)}
+.top b{font-size:17px}
+.proto{font-size:12px;padding:3px 8px;border-radius:6px;background:#FBF0DC;color:#7A4D0B;margin-left:10px;font-weight:600}
+.who{display:flex;align-items:center;gap:10px}
+.avatar{width:36px;height:36px;border-radius:18px;background:var(--g);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px}
+main{max-width:1440px;margin:0 auto;padding:28px 24px 60px}
+.head{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap}
+h1{margin:0;font-size:28px}
+.flow{color:var(--mut);margin-top:8px;line-height:22px}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:10px;border:1px solid var(--g);background:var(--g);color:#fff;font-weight:600;cursor:pointer}
+.btn:hover{background:var(--g2)}
+.btn.sec{background:#fff;color:var(--ink);border-color:var(--line)}
+.btn.sec:hover{background:#F7F6F2}
+.btn.warn{background:#fff;color:#8A2B1A;border-color:#F0C4B9}
+.link{background:none;border:none;color:var(--g);font-weight:600;cursor:pointer;padding:8px}
+.tabs{display:inline-flex;flex-wrap:wrap;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;margin:22px 0 18px}
+.tabs button{border:none;border-right:1px solid var(--line);background:#fff;color:var(--mut);min-height:44px;padding:0 16px;cursor:pointer}
+.tabs button[aria-selected=true]{background:var(--soft);color:var(--g);font-weight:600}
+.bar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.pills{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.pills button{border:none;border-right:1px solid var(--line);background:#fff;color:var(--mut);min-height:40px;padding:0 14px;cursor:pointer}
+.pills button[aria-pressed=true]{background:var(--soft);color:var(--g);font-weight:600}
+.search{height:40px;min-width:300px;padding:0 14px;border:1px solid var(--line);border-radius:10px;background:#fff}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px}
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;font-size:12px;letter-spacing:.08em;color:var(--mut);font-weight:600;padding:16px}
+td{padding:16px;border-top:1px solid var(--line);vertical-align:middle;line-height:21px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:13px;font-weight:500;white-space:nowrap;border:1px solid}
+.chip:before{content:"";width:6px;height:6px;border-radius:3px;background:currentColor}
+.c-amber{background:#FBF0DC;color:#7A4D0B;border-color:#EED6A6}.c-blue{background:#E6EEF8;color:#23497A;border-color:#BFD1EA}
+.c-purple{background:#F0EBF8;color:#55358A;border-color:#D6C8EC}.c-red{background:#FBE8E4;color:#8A2B1A;border-color:#F0C4B9}
+.c-green{background:#E3EFE9;color:#1D5A44;border-color:#C3DCCF}.c-grey{background:#EFEEEA;color:#4E524D;border-color:#DAD7CF}
+.empty{padding:40px;text-align:center;color:var(--mut)}
+.board{display:grid;grid-template-columns:repeat(8,minmax(170px,1fr));gap:12px;overflow-x:auto}
+.col{background:#EEEBE4;border-radius:14px;padding:12px;min-height:400px;display:flex;flex-direction:column;gap:10px}
+.col h3{margin:0 0 4px;font-size:14px;display:flex;justify-content:space-between}
+.tcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:5px;width:100%}
+.tcard small{color:var(--mut)}
+.tcard b{overflow-wrap:anywhere}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.panel{padding:22px}
+.panel h2{margin:0 0 8px;font-size:19px}
+.mut{color:var(--mut)}
+dialog{border:none;border-radius:20px;padding:0;width:min(940px,96vw);max-height:92vh;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+dialog::backdrop{background:rgba(40,42,40,.55)}
+.mh{display:flex;justify-content:space-between;align-items:flex-start;padding:22px 26px 16px;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:2}
+.mh h2{margin:0;font-size:21px}
+.mb{padding:22px 26px;display:flex;flex-direction:column;gap:20px}
+.mf{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;padding:16px 26px;border-top:1px solid var(--line);position:sticky;bottom:0;background:#fff}
+.x{width:44px;height:44px;border:none;background:none;font-size:22px;color:var(--mut);cursor:pointer}
+fieldset{border:1px solid var(--line);border-radius:14px;padding:18px;margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 18px}
+legend{font-weight:700;padding:0 6px;font-size:16px}
+.f{display:flex;flex-direction:column;gap:7px}.f.full,.note.full{grid-column:1/-1}
+.f>span{font-weight:600}
+.f input:not([type=checkbox]):not([type=radio]),.f select,.f textarea{width:100%;min-height:44px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fff}
+.hint{font-size:13px;color:var(--mut);line-height:18px}
+.note{font-size:14px;line-height:20px;padding:12px 14px;border-radius:10px;background:#F5F3EF;color:var(--mut)}
+.note.amber{background:#FBF0DC;color:#6B430A}
+.checks{display:flex;flex-wrap:wrap;gap:8px}
+.checks label{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 12px;border:1px solid var(--line);border-radius:10px}
+input[type=checkbox],input[type=radio]{width:18px;height:18px;accent-color:var(--g)}
+.err{color:#8A2B1A;font-size:13px}
+.pick{display:flex;flex-direction:column;gap:6px;padding:20px;border:1px solid var(--line);border-radius:14px;background:#fff;text-align:left;cursor:pointer;width:100%}
+.pick:hover{border-color:var(--g)}
+.pick b{font-size:17px}
+.kv{display:grid;grid-template-columns:200px 1fr;gap:8px 18px}
+.kv span:nth-child(odd){color:var(--mut)}
+.trail{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.trail li{display:flex;gap:12px}
+.dot{flex:none;width:22px;height:22px;border-radius:11px;background:var(--soft);color:var(--g);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--g);color:#fff;padding:12px 18px;border-radius:10px;display:none}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (max-width:800px){fieldset,.grid3,.grid4{grid-template-columns:1fr}.kv{grid-template-columns:1fr}.search{min-width:0;width:100%}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div><b>Dashboard</b><span class="proto">PROTOTYPE · sample data</span></div>
+  <div class="who">
+    <label class="mut" for="role">Viewing as</label>
+    <select id="role" class="search" style="min-width:0"></select>
+    <span class="avatar" id="av">AM</span>
+  </div>
+</header>
+<main>
+  <div class="head">
+    <div><h1>PR &amp; Design</h1>
+      <div class="flow">Brief → HOD approval → POPIA check → design → draft review → final art → filed → delivered → closed</div></div>
+    <button class="btn" id="newBtn">+ New PR request</button>
+  </div>
+  <nav class="tabs" role="tablist" id="tabs"></nav>
+  <section id="view"></section>
+</main>
+
+<dialog id="dlg"></dialog>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* ---------- Setup ---------- */
+const ROLES=[
+ {id:"staff",name:"Abongile",title:"PCO (requester)",ini:"AB"},
+ {id:"hod",name:"HOD Training & Development",title:"Brief approver",ini:"HD"},
+ {id:"qms",name:"Annemarie Mostert",title:"QMS Administrator · POPIA check",ini:"AM"},
+ {id:"designer",name:"Bev Mallows",title:"Designer · B-Inspired (external)",ini:"BM"},
+ {id:"marketing",name:"HOD Marketing",title:"Marketing oversight",ini:"MK"},
+ {id:"ceo",name:"Lizelle",title:"CEO",ini:"LZ"}];
+const STATUS={ "HOD approval":"amber","Needs info":"red","POPIA check":"amber","In design":"blue","Draft review":"purple","Changes requested":"red","Final art":"green","Delivered":"green","Closed":"grey"};
+const COLS=["HOD approval","POPIA check","In design","Draft review","Changes requested","Final art","Delivered","Closed"];
+const KINDS=["Recruitment form design","RFQ advert (catering, transport, venue)","New programme launch","Ongoing campaign / advert","Event / workshop promotion","CSI campaign","Social media post","Newsletter","Corporate / brand asset","Annual report"];
+const CLIENTS=["— none (Angels work) —","SCATEC","Seriti G","Noblesfontein (NWF)","ENGIE SA","BKM","AKS1","EIMS-UMA"];
+const PROGS=["Youth4Change","Enterprise4Change","Agri4Change","Smart Agri Hub","Other"];
+const LEAD=5, KEY="angels_pr_demo_v1";
+const today=()=>new Date().toISOString().slice(0,10);
+const fmt=d=>d?new Date(d+"T00:00").toLocaleDateString("en-ZA",{day:"numeric",month:"short",year:"numeric"}):"—";
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const slug=s=>s.replace(/[^A-Za-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,30);
+function workdays(from,to){let n=0,d=new Date(from+"T00:00"),e=new Date(to+"T00:00");while(d<e){d.setDate(d.getDate()+1);const w=d.getDay();if(w&&w<6)n++;}return n;}
+function folder(r){
+  if(r.client&&!r.client.startsWith("—")) return `Clients / ${r.client} / ${r.id}_${slug(r.title)}`;
+  const k=r.kind;
+  if(k.startsWith("CSI")) return `Angels CSI / ${r.programme||"School"} / ${r.id}_${slug(r.title)}`;
+  if(k.startsWith("Event")) return `Angels / Events / ${r.id}_${slug(r.title)}`;
+  if(k.startsWith("Newsletter")) return `Newsletters / ${r.id}_${slug(r.title)}`;
+  if(k.startsWith("Annual")) return `Annual Report (AGM) / ${r.id}_${slug(r.title)}`;
+  if(k.startsWith("Corporate")) return `Angels / CI Documents (Stationery) / ${r.id}_${slug(r.title)}`;
+  return `Angels / Campaigns / ${r.id}_${slug(r.title)}`;
+}
+function seed(){
+  const t=(when,by,text,note)=>({when,by,text,note});
+  return {next:131,reqs:[
+   {id:"PR-2026-0127",type:"Design brief",kind:"Recruitment form design",title:"Y4C Cohort 3 recruitment flyer and online form",client:"SCATEC",programme:"Youth4Change",requester:"Abongile",dept:"Training & Development",needed:"2027-01-15",status:"HOD approval",round:0,formats:["Print","Social media","WhatsApp"],header:true,qr:true,photos:false,
+    trail:[t("2026-11-26","Abongile","Submitted","HOD emailed")],comments:[]},
+   {id:"PR-2026-0126",type:"Design brief",kind:"New programme launch",title:"NWF Enterprise4Change launch advert",client:"Noblesfontein (NWF)",programme:"Enterprise4Change",requester:"Lenuchca Everson",dept:"Training & Development",needed:"2027-01-12",status:"In design",round:1,formats:["Print","Social media"],header:true,photos:true,consent:"Social media, Print",
+    trail:[t("2026-11-20","Lenuchca Everson","Submitted","HOD emailed"),t("2026-11-21","HOD Training & Development","Brief approved","QMS emailed"),t("2026-11-22","Annemarie Mostert","POPIA check passed","2 photos · consent on file · Designer emailed")],comments:[]},
+   {id:"PR-2026-0125",type:"Good news story",kind:"Client report content",title:"Seriti Green quarterly good news story",client:"Seriti G",programme:"Smart Agri Hub",requester:"Jim Cairns",dept:"Reports",needed:"2027-01-08",status:"Draft review",round:2,formats:["Print","Social media","WhatsApp"],photos:true,consent:"Social media, Print",
+    trail:[t("2026-11-18","Jim Cairns","Submitted","HOD emailed"),t("2026-11-19","HOD Reports","Brief approved","QMS emailed"),t("2026-11-20","Annemarie Mostert","POPIA check passed","3 photos · consent on file"),t("2026-11-25","Bev Mallows","Draft 1 uploaded","Requester emailed"),t("2026-11-26","Jim Cairns","Changes requested · round 1","“Use the Smart Agri Hub photo on the cover and add the Seriti Green logo.”"),t("2026-11-27","Bev Mallows","Draft 2 uploaded","Requester emailed")],comments:[]},
+   {id:"PR-2026-0124",type:"Design brief",kind:"CSI campaign",title:"Sandaalhout Primary handover poster",client:"— none (Angels work) —",programme:"Sandaalhout Primary",requester:"Melissa",dept:"CEO’s office",needed:"2026-12-10",status:"Changes requested",round:1,formats:["Print"],photos:true,consent:"All platforms",
+    trail:[t("2026-11-15","Melissa","Submitted","HOD emailed"),t("2026-11-16","HOD Training & Development","Brief approved",""),t("2026-11-17","Annemarie Mostert","POPIA check passed",""),t("2026-11-24","Bev Mallows","Draft 1 uploaded",""),t("2026-11-25","Melissa","Changes requested · round 1","Fix the school name spelling; bigger logo")],comments:[]},
+   {id:"PR-2026-0123",type:"Design brief",kind:"Newsletter",title:"Angels Newsletter Q2 2026-27 cover and contents",client:"— none (Angels work) —",programme:"",requester:"Bev Mallows",dept:"PR",needed:"2026-12-01",status:"Delivered",round:1,formats:["Print","Email","Social media"],photos:false,
+    trail:[t("2026-11-10","Bev Mallows","Submitted",""),t("2026-11-11","HOD Marketing","Brief approved",""),t("2026-11-11","Annemarie Mostert","POPIA check passed",""),t("2026-11-20","Bev Mallows","Draft 1 uploaded",""),t("2026-11-21","HOD Marketing","Draft approved",""),t("2026-11-28","Bev Mallows","Delivered","Print PDF · SM JPG · Email PDF")],comments:[]},
+   {id:"PR-2026-0098",type:"Design brief",kind:"Recruitment form design",title:"Y4C Cohort 2 recruitment flyer",client:"SCATEC",programme:"Youth4Change",requester:"Abongile",dept:"Training & Development",needed:"2026-07-15",status:"Closed",round:2,formats:["Print","Social media","WhatsApp","Email"],photos:false,qr:true,header:true,
+    trail:[t("2026-06-20","Abongile","Submitted",""),t("2026-07-10","Bev Mallows","Delivered",""),t("2026-07-14","Abongile","Closed","")],comments:[]}
+  ].map(r=>({...r,folder:folder(r)}))};
+}
+let db; try{db=JSON.parse(localStorage.getItem(KEY))||seed()}catch(e){db=seed()}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(db))}catch(e){}};
+let role="qms", tab="My tasks", filt="Open", q="";
+const me=()=>ROLES.find(r=>r.id===role);
+
+/* ---------- Who may act ---------- */
+function actionsFor(r){
+  const R=role, a=[];
+  if(r.status==="HOD approval"&&(R==="hod"||R==="marketing")) a.push(["Approve brief","approve"],["Return to requester","return"]);
+  if(r.status==="Needs info"&&R==="staff") a.push(["Resubmit","resubmit"]);
+  if(r.status==="POPIA check"&&R==="qms") a.push(["POPIA check passed","popia"],["Return to requester","return"]);
+  if((r.status==="In design"||r.status==="Changes requested")&&R==="designer") a.push(["Upload draft "+(r.round+1),"draft"]);
+  if(r.status==="Draft review"&&(R==="staff"||R==="hod"||R==="marketing")) a.push(["Approve draft","okdraft"],["Request changes","changes"]);
+  if(r.status==="Final art"&&R==="designer") a.push(["Mark delivered","deliver"]);
+  if(r.status==="Delivered"&&(R==="staff"||R==="marketing")) a.push(["Close request","close"]);
+  return a;
+}
+function act(r,what,comment){
+  const by=me().name, d=today(); let text="",note="";
+  if(what==="approve"){r.status="POPIA check";text="Brief approved";note="QMS emailed"}
+  if(what==="return"){r.status="Needs info";text="Returned to requester";note=comment||"More information needed"}
+  if(what==="resubmit"){r.status="HOD approval";text="Resubmitted";note="HOD emailed"}
+  if(what==="popia"){r.status="In design";text="POPIA check passed";note=r.photos?"Consent on file · Designer emailed":"No identifiable people · Designer emailed"}
+  if(what==="draft"){r.round++;r.status="Draft review";text=`Draft ${r.round} uploaded`;note="Requester emailed"}
+  if(what==="okdraft"){r.status="Final art";text="Draft approved";note="Designer emailed · folder created: "+r.folder}
+  if(what==="changes"){r.status="Changes requested";text=`Changes requested · round ${r.round}`;note=comment||""}
+  if(what==="deliver"){r.status="Delivered";text="Delivered";note="Final Asset Link sent to requester"}
+  if(what==="close"){r.status="Closed";text="Closed";note=""}
+  r.trail.push({when:d,by,text,note}); save(); toast(text); render(); openTicket(r.id);
+}
+
+/* ---------- Views ---------- */
+const chip=s=>`<span class="chip c-${STATUS[s]||"grey"}">${esc(s)}</span>`;
+function rowsTable(list,cols){
+  if(!list.length) return `<div class="card empty">Nothing here.</div>`;
+  const head={ref:"REF",kind:"TYPE",what:"WHAT",cl:"CLIENT / PROGRAMME",by:"REQUESTED BY",need:"NEEDED BY",st:"STATUS",fmt:"FORMATS",fold:"FILES"};
+  const cell={ref:r=>esc(r.id),kind:r=>esc(r.kind),what:r=>`<b>${esc(r.title)}</b>`,cl:r=>esc([r.client&&!r.client.startsWith("—")?r.client:"Angels",r.programme].filter(Boolean).join(" · ")),
+   by:r=>esc(r.requester),need:r=>fmt(r.needed),st:r=>chip(r.status),fmt:r=>esc((r.formats||[]).join(" · ")),
+   fold:r=>["Delivered","Closed","Final art"].includes(r.status)?`<span class="mut">${esc(r.folder)}</span>`:`<span class="mut">Not filed yet</span>`};
+  return `<div class="card tablewrap"><table><thead><tr>${cols.map(c=>`<th scope="col">${head[c]}</th>`).join("")}<th></th></tr></thead><tbody>${
+   list.map(r=>`<tr>${cols.map(c=>`<td>${cell[c](r)}</td>`).join("")}<td><button class="link" data-open="${r.id}">Open</button></td></tr>`).join("")}</tbody></table></div>`;
+}
+function matches(r){const s=(q||"").toLowerCase();return !s||[r.id,r.title,r.client,r.programme,r.kind,r.requester].join(" ").toLowerCase().includes(s)}
+const V={
+ "My tasks"(){
+   const mine=db.reqs.filter(r=>actionsFor(r).length);
+   return `<p class="mut" style="margin-top:0">Requests waiting for you as <b>${esc(me().title)}</b>.</p>${rowsTable(mine,["ref","kind","what","cl","need","st"])}`;
+ },
+ "Requests"(){
+   const open=r=>!["Delivered","Closed"].includes(r.status);
+   const list=db.reqs.filter(r=>(filt==="All"||(filt==="Open"?open(r):!open(r)))&&matches(r));
+   return `<div class="bar"><div class="pills">${["Open","Done","All"].map(p=>`<button aria-pressed="${p===filt}" data-filt="${p}">${p}</button>`).join("")}</div>
+   <label><span class="sr">Search requests</span><input class="search" id="q" type="search" placeholder="Search by ref, title, client or programme" value="${esc(q)}"></label></div>
+   ${rowsTable(list,["ref","kind","what","cl","by","need","st"])}`;
+ },
+ "Design board"(){
+   return `<p class="mut" style="margin-top:0">Every request by stage. Open a card to act on it; each step is added to its trail.</p><div class="board">${COLS.map(c=>{
+     const l=db.reqs.filter(r=>r.status===c||(c==="HOD approval"&&r.status==="Needs info"));
+     return `<section class="col" aria-label="${c}"><h3><span>${c}</span><span class="mut">${l.length}</span></h3>${l.map(r=>`<button class="tcard" data-open="${r.id}"><small>${r.id}</small><b>${esc(r.title)}</b><small>${esc(r.client&&!r.client.startsWith("—")?r.client:"Angels")}</small><small>Due ${fmt(r.needed)}${r.round?" · round "+r.round:""}${r.status==="Needs info"?" · needs info":""}</small></button>`).join("")||`<span class="mut" style="font-size:13px">Nothing here</span>`}</section>`}).join("")}</div>`;
+ },
+ "Find files"(){
+   const list=db.reqs.filter(r=>["Final art","Delivered","Closed"].includes(r.status)&&matches(r));
+   return `<div class="card panel" style="margin-bottom:14px"><label><span class="sr">Search all finished PR work</span><input class="search" id="q" type="search" style="width:100%;height:52px;font-size:17px;border:2px solid var(--g)" placeholder="Search finished work by client, programme, title or reference" value="${esc(q)}"></label>
+   <p class="hint" style="margin:10px 0 0">Work from before the Hub is still in the Teams libraries until it’s been sorted.</p></div>${rowsTable(list,["ref","what","cl","st","fmt","fold"])}`;
+ },
+ "Settings"(){
+   const rc=(t,d,p)=>`<section class="card panel"><h2>${t}</h2><p class="mut" style="line-height:21px">${d}</p><b>${p}</b></section>`;
+   return `<div class="grid3">${rc("Designer (external)","B-Inspired Graphic Design: picks up approved briefs, uploads drafts and final art, marks requests delivered. Sees PR requests only.","Bev Mallows · B-Inspired")}
+   ${rc("POPIA check (QMS)","Checks consent is on file for photos and personal information, and that recruitment forms collect only what is needed, before design starts.","Annemarie Mostert · QMS Administrator")}
+   ${rc("Brief approvers","The HOD of the requester’s department approves the brief. HOD Marketing oversees all PR work.","Departmental HODs · HOD Marketing")}</div>
+   <section class="card panel" style="margin-top:18px"><h2>Settings</h2><div class="grid4">
+   <div><span class="mut">Designer lead time</span><br><b>${LEAD} working days</b></div><div><span class="mut">Review reminder after</span><br><b>2 working days</b></div>
+   <div><span class="mut">Unsuccessful applications deleted after</span><br><b>12 months</b></div><div><span class="mut">Close delivered requests after</span><br><b>14 days</b></div></div>
+   <p class="hint">Unsuccessful applications are deleted or de-identified 12 months after selection (POPIA s14). Marketing messages only go to people who opted in (POPIA s69).</p>
+   <button class="btn sec" id="reset">Reset demo data</button></section>`;
+ }
+};
+const TABS=["My tasks","Requests","Design board","Find files","Settings"];
+function render(){
+  document.getElementById("tabs").innerHTML=TABS.map(t=>`<button role="tab" aria-selected="${t===tab}" data-tab="${t}">${t}</button>`).join("");
+  document.getElementById("view").innerHTML=V[tab]();
+  const qi=document.getElementById("q"); if(qi){qi.oninput=e=>{q=e.target.value;const p=qi.selectionStart;render();const n=document.getElementById("q");n.focus();n.setSelectionRange(p,p)}}
+  const rs=document.getElementById("reset"); if(rs) rs.onclick=()=>{db=seed();save();toast("Demo data reset");render()};
+}
+
+/* ---------- Ticket ---------- */
+const dlg=document.getElementById("dlg");
+function openTicket(id){
+  const r=db.reqs.find(x=>x.id===id); if(!r) return;
+  const acts=actionsFor(r);
+  dlg.innerHTML=`<div class="mh"><div><h2>${esc(r.id)} · ${esc(r.kind)}</h2><div class="mut">${esc(r.title)} · ${esc(r.requester)}</div></div><button class="x" aria-label="Close" data-close>×</button></div>
+  <div class="mb"><div>${chip(r.status)}${r.round?` <span class="mut">· round ${r.round}</span>`:""}</div>
+  <div class="kv"><span>Client and programme</span><span>${esc([r.client,r.programme].filter(Boolean).join(" · "))}</span>
+  <span>Department</span><span>${esc(r.dept)}</span><span>Needed by</span><span>${fmt(r.needed)}</span>
+  <span>Formats</span><span>${esc((r.formats||[]).join(" · "))}${r.header?" · header image":""}${r.qr?" · QR code":""}</span>
+  <span>Photos of people</span><span>${r.photos?"Yes · consent: "+esc(r.consent||"—"):"No"}</span>
+  <span>Folder</span><span>${["Final art","Delivered","Closed"].includes(r.status)?"📁 "+esc(r.folder):`<span class="mut">Created when the draft is approved: ${esc(r.folder)}</span>`}</span></div>
+  <div><h3 style="margin:0 0 10px;font-size:16px">Trail</h3><ul class="trail">${r.trail.map(t=>`<li><span class="dot" aria-hidden="true">✓</span><div><b>${esc(t.text)} · ${esc(t.by)} · ${fmt(t.when)}</b>${t.note?`<div class="mut">${esc(t.note)}</div>`:""}</div></li>`).join("")}</ul></div>
+  ${r.comments.length?`<div><h3 style="margin:0 0 10px;font-size:16px">Comments</h3>${r.comments.map(c=>`<p style="margin:0 0 8px"><b>${esc(c.by)}</b> <span class="mut">${fmt(c.when)}</span><br>${esc(c.text)}</p>`).join("")}</div>`:""}
+  <label class="f"><span>Comment</span><textarea id="cm" rows="3" placeholder="Everyone on this request is emailed. Replaces the Teams chat."></textarea></label></div>
+  <div class="mf"><button class="btn sec" id="addc">Add comment</button>${acts.map(([l,w])=>`<button class="btn ${/Return|changes/.test(l)?"warn":""}" data-act="${w}">${l}</button>`).join("")}</div>`;
+  dlg.querySelector("#addc").onclick=()=>{const v=dlg.querySelector("#cm").value.trim();if(!v)return;r.comments.push({by:me().name,when:today(),text:v});save();openTicket(id);toast("Comment added · everyone emailed")};
+  dlg.querySelectorAll("[data-act]").forEach(b=>b.onclick=()=>{const w=b.dataset.act;const c=dlg.querySelector("#cm").value.trim();
+    if((w==="changes"||w==="return")&&!c){dlg.querySelector("#cm").focus();toast("Say what needs to change in the comment box");return}act(r,w,c)});
+  if(!dlg.open) dlg.showModal();
+}
+
+/* ---------- New request ---------- */
+function picker(){
+  dlg.innerHTML=`<div class="mh"><div><h2>What do you need from PR?</h2><div class="mut">Each kind asks only for what the designer needs for that job.</div></div><button class="x" aria-label="Close" data-close>×</button></div>
+  <div class="mb">
+   <button class="pick" data-kind="Design brief"><b>Design brief</b><span class="mut">Adverts, flyers, posters, recruitment forms, RFQ adverts, newsletters and Angels collateral.</span><span class="hint">Replaces the Graphic Design Briefing Template and PRB-FRM-001</span></button>
+   <button class="pick" data-kind="Good news story"><b>Client good news story</b><span class="mut">A story for a client’s quarterly report: highlights, a quote, stats, monthly summaries and photos.</span><span class="hint">Replaces the Client Good News Briefing Form</span></button>
+   <button class="pick" data-kind="Story request"><b>Entrepreneur story request</b><span class="mut">Get a link to send to two entrepreneurs for newsletter and social media articles.</span><span class="hint">Replaces the SM Feedback Request forms</span></button>
+  </div>`;
+  dlg.querySelectorAll("[data-kind]").forEach(b=>b.onclick=()=>form(b.dataset.kind));
+  if(!dlg.open) dlg.showModal();
+}
+const opt=a=>a.map(x=>`<option>${esc(x)}</option>`).join("");
+const F=(l,ctrl,h="",full=false)=>`<label class="f${full?" full":""}"><span>${l}</span>${ctrl}${h?`<span class="hint">${h}</span>`:""}</label>`;
+const chk=(name,items,on=[])=>`<div class="checks">${items.map(i=>`<label><input type="checkbox" name="${name}" value="${esc(i)}"${on.includes(i)?" checked":""}>${esc(i)}</label>`).join("")}</div>`;
+function form(type){
+  const design=type==="Design brief", gn=type==="Good news story", story=type==="Story request";
+  dlg.innerHTML=`<form id="nf" novalidate><div class="mh"><div><h2>${design?"New design brief":gn?"Client good news story":"Entrepreneur story request"}</h2><div class="mut">Goes to your HOD for approval, then to the POPIA check, then to the designer.</div></div><button type="button" class="x" aria-label="Close" data-close>×</button></div>
+  <div class="mb">
+   <fieldset><legend>The request</legend>
+    ${design?F("Kind of request",`<select name="kind" id="kind">${opt(KINDS)}</select>`):""}
+    ${F("Client",`<select name="client">${opt(CLIENTS)}</select>`,"From the Clients list, so folder names never get mistyped")}
+    ${F("Programme",`<select name="programme">${opt(PROGS)}</select>`)}
+    ${F("Your department",`<select name="dept">${opt(["Training & Development","Operations","Reports","HR","Finance","Marketing","CEO’s office"])}</select>`)}
+    ${F("Short title *",`<input name="title" required placeholder="${story?"e.g. Smart Agri Hub training stories":"e.g. Y4C Cohort 3 recruitment flyer"}">`,"Used in the folder and file names",true)}
+    ${F(gn?"Client report needed by *":"Needed by *",`<input type="date" name="needed" required>`)}
+    ${design?F("Draft for approval by",`<input type="date" name="draft">`):""}
+    <div class="note amber full" id="leadnote" hidden></div>
+   </fieldset>
+   ${design?`<fieldset><legend>Format</legend>
+    ${F("Where will it be used?",chk("formats",["Print","Social media","WhatsApp","Email","Website"],["Social media"]),"",true)}
+    ${F("Size",`<select name="size">${opt(["A4","A5","A3","DL","1080 × 1080 square","Pull-up banner","Other"])}</select>`)}
+    ${F("Header design image",chk("header",["Included with every advert"],["Included with every advert"]),"Bev designs a matching header with each advert")}
+   </fieldset>
+   <fieldset><legend>Content</legend>
+    ${F("Heading and catch-phrase *",`<input name="heading" required>`,"",true)}
+    ${F("Body copy *",`<textarea name="copy" rows="4" required placeholder="Paste the exact wording. The designer designs it; she doesn’t write it."></textarea>`,"",true)}
+    ${F("Dates, times and venue",`<input name="venue">`)}${F("How to apply or register",`<input name="apply">`)}
+    ${F("Logos needed",chk("logos",["Angels logo","Client logo and CI"],["Angels logo"]),"",true)}
+   </fieldset>
+   <fieldset id="qrbox"><legend>QR code and short link</legend>
+    <div class="note full">Added automatically to every recruitment and RFQ advert.</div>
+    ${F("The QR code opens",`<input name="qrurl" placeholder="Angels application form, or the RFQ Hub link">`,"",true)}
+    ${F("Stop working on",`<input type="date" name="qrend">`,"Defaults to the closing date")}
+    ${F("Count scans",`<select name="scans"><option>Yes</option><option>No</option></select>`)}
+   </fieldset>
+   <fieldset id="rfqbox"><legend>RFQ advert</legend>
+    ${F("Service needed",`<select name="service">${opt(["Catering","Transport","Venue","Other"])}</select>`)}${F("Quotes close on",`<input type="date" name="rfqclose">`)}
+    ${F("Where suppliers send quotes",`<input name="rfqlink" placeholder="RFQ Hub link or email">`,"Quotes are handled in the RFQ Hub, not in PR",true)}
+   </fieldset>
+   <fieldset id="recbox"><legend>Recruitment form</legend>
+    ${F("Personal information to collect",chk("pi",["Name","ID number","Contact details","CV upload","Qualifications"],["Name","Contact details"]),"Only ask for what you need. Applications stay in the Angels system, never Google Forms. Unsuccessful applications are deleted after 12 months.",true)}
+    ${F("Marketing consent",chk("mk",["Add a separate, unticked “Send me Angels news” box"],["Add a separate, unticked “Send me Angels news” box"]),"POPIA s69: only people who tick it get newsletters, email or WhatsApp news",true)}
+   </fieldset>`:""}
+   ${gn?`<fieldset><legend>The story</legend>
+    ${F("Quarter",`<select name="quarter">${opt(["Q3 Sep–Nov 2026","Q4 Dec 2026–Feb 2027"])}</select>`)}
+    ${F("Programme highlights this quarter *",`<textarea name="copy" rows="4" required placeholder="Training or mentoring sessions, an ED’s progress, asset deliveries…"></textarea>`,"",true)}
+    ${F("Quote from an ED or mentor",`<textarea name="quote" rows="2"></textarea>`)}${F("Stats to include",`<textarea name="stats" rows="2"></textarea>`)}
+    ${F("Month 1 summary",`<textarea rows="2"></textarea>`,"",true)}${F("Month 2 summary",`<textarea rows="2"></textarea>`,"",true)}${F("Month 3 summary",`<textarea rows="2"></textarea>`,"",true)}
+   </fieldset>`:""}
+   ${story?`<fieldset><legend>Story link</legend>
+    ${F("Training, workshop or event",`<input name="copy" required placeholder="e.g. Smart Agri Hub training, 14 Nov 2026">`,"",true)}
+    <div class="note full">After submitting you get a link to send to two entrepreneurs (or fill in during a phone interview). Their answers, photos and consent come straight back into this request.</div>
+   </fieldset>`:""}
+   ${story?"":`<fieldset><legend>Photos and people</legend>
+    ${F("Does this include photos of people who can be identified?",`<select name="photos" id="photos"><option value="">Choose…</option><option>Yes</option><option>No</option></select>`,"",true)}
+    <div class="full" id="consentbox" hidden style="display:contents">
+     ${F("Consent obtained by *",`<input name="cby">`)}${F("Consent date *",`<input type="date" name="cdate">`)}
+     ${F("Consent covers *",chk("cscope",["Social media","Print","Newsletter","All platforms"]),"",true)}
+    </div></fieldset>`}
+   <label style="display:flex;gap:10px;align-items:flex-start;line-height:22px"><input type="checkbox" name="declare" required> I confirm the information is correct and any personal information and photos were obtained with consent, in line with Angels’ QMS, POPIA and branding requirements.</label>
+   <div class="err" id="err" role="alert"></div>
+  </div>
+  <div class="mf"><button type="button" class="btn sec" data-close>Cancel</button><button class="btn" type="submit">Submit for HOD approval</button></div></form>`;
+  const f=dlg.querySelector("#nf");
+  const sync=()=>{const k=f.kind?.value||"";
+    const show=(id,on)=>{const el=f.querySelector(id);if(el)el.style.display=on?"":"none"};
+    show("#qrbox",/Recruitment|RFQ/.test(k));show("#rfqbox",/RFQ/.test(k));show("#recbox",/Recruitment/.test(k));
+    const cb=f.querySelector("#consentbox");if(cb)cb.style.display=f.photos?.value==="Yes"?"contents":"none";
+    const n=f.querySelector("#leadnote"),d=(f.draft&&f.draft.value)||f.needed.value;
+    if(d){const w=workdays(today(),d);n.hidden=w>=LEAD;n.textContent=`Only ${w} working days away. The designer needs ${LEAD}; this will be flagged to the PR team.`}else n.hidden=true;};
+  f.addEventListener("change",sync);sync();
+  f.onsubmit=e=>{e.preventDefault();const fd=new FormData(f),g=k=>(fd.get(k)||"").trim();
+    const miss=[];if(!g("title"))miss.push("short title");if(!g("needed"))miss.push("needed-by date");if(!g("copy"))miss.push(design?"body copy":gn?"highlights":"training or event");
+    if(design&&!g("heading"))miss.push("heading");
+    if(!story&&!g("photos"))miss.push("photos question");
+    if(g("photos")==="Yes"&&(!g("cby")||!g("cdate")||!fd.getAll("cscope").length))miss.push("consent details");
+    if(!fd.get("declare"))miss.push("declaration");
+    if(miss.length){f.querySelector("#err").textContent="Still needed: "+miss.join(", ")+".";return}
+    const id=`PR-${new Date().getFullYear()}-${String(db.next++).padStart(4,"0")}`;
+    const r={id,type,kind:design?g("kind"):gn?"Client report content":"Entrepreneur story request",title:g("title"),client:g("client"),programme:g("programme"),requester:me().name,dept:g("dept"),needed:g("needed"),
+      status:"HOD approval",round:0,formats:fd.getAll("formats"),header:!!fd.get("header"),qr:design&&/Recruitment|RFQ/.test(g("kind")),photos:g("photos")==="Yes",consent:fd.getAll("cscope").join(", "),
+      trail:[{when:today(),by:me().name,text:"Submitted",note:"HOD emailed"+(story?" · story link created":"")}],comments:[]};
+    r.folder=folder(r);db.reqs.unshift(r);save();dlg.close();tab="Requests";filt="Open";render();toast(id+" submitted · HOD emailed");};
+}
+
+/* ---------- Wiring ---------- */
+function toast(t){const el=document.getElementById("toast");el.textContent=t;el.style.display="block";clearTimeout(toast.h);toast.h=setTimeout(()=>el.style.display="none",2600)}
+document.addEventListener("click",e=>{
+  const t=e.target.closest("[data-tab],[data-filt],[data-open],[data-close]");if(!t)return;
+  if(t.dataset.tab){tab=t.dataset.tab;q="";render()}
+  if(t.dataset.filt){filt=t.dataset.filt;render()}
+  if(t.dataset.open) openTicket(t.dataset.open);
+  if(t.hasAttribute("data-close")) dlg.close();
+});
+dlg.addEventListener("close",()=>render());
+document.getElementById("newBtn").onclick=picker;
+const rs=document.getElementById("role");
+rs.innerHTML=ROLES.map(r=>`<option value="${r.id}">${esc(r.name)} — ${esc(r.title)}</option>`).join("");rs.value=role;
+rs.onchange=()=>{role=rs.value;document.getElementById("av").textContent=me().ini;render()};
+document.getElementById("av").textContent=me().ini;
+render();
+</script>
+</body>
+</html>
